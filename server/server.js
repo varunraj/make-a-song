@@ -9,7 +9,6 @@ const MONGO_URI = require ('../config.js');
 
 const app = express();
 
-//const MONGO_URI = 'mongodb+srv://dbUser:rhvFLLke3RSxgDQm@cluster0-cqkvp.mongodb.net/test?retryWrites=true&w=majority';
 
 // Replace with your mongoLab URI
 if (!MONGO_URI) {
