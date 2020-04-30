@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo';
+import { Link, hashHistory } from 'react-router';
+import query from '../queries/fetchSongs';
 
 class SongCreate extends Component{
 
@@ -15,15 +17,18 @@ class SongCreate extends Component{
         // calling mutation function on props with query params will run mutation query.
         
         this.props.mutate({
-            variables:{
-                title:this.state.title
-            }
-        });
+                variables:{title:this.state.title},
+                // rerun below query to clear the cache on home page
+                refetchQueries:[{ query }]
+            
+        }).then(()=> hashHistory.push('/') ) // On successful mutation, send back to home page
+               
     }
 
     render(){
         return(
             <div>
+                <Link to="/">Back</Link>
                 <h3>Create a new Song</h3>
                 <form onSubmit={this.onSubmit.bind(this)}>
                     <label>Song Title:</label>
