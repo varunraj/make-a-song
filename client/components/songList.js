@@ -6,13 +6,20 @@ import query from '../queries/fetchSongs';
 
 class SongList extends Component{
     
+    onSongDelete(id){
+        this.props.mutate({ variables : { id }})
+        .then(()=>this.props.data.refetch()) // refresh screen once delete is done.
 
+    }
 
     renderSongs() {
         return this.props.data.songs.map((song)=> {
             return (
                 <li key={song.id} className="collection-item">
                     {song.title}
+                    <i 
+                        className="material-icons" 
+                        onClick={()=>this.onSongDelete(song.id)}>delete</i>
                 </li>
             );
         });
@@ -38,8 +45,17 @@ class SongList extends Component{
     )}
 }
 
+const mutation = gql `
+    mutation DeleteSong($id : ID){
+        deleteSong(id:$id){
+             id
+        }
+    }
+`;
 
 
-export default graphql(query)(SongList); 
+export default graphql(mutation)(
+    graphql(query)(SongList)
+); 
 // first part will return a function whih will invoke SongList
 // This is where bonding between query and component.
